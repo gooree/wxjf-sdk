@@ -37,25 +37,10 @@
 		</developer>
 	</developers>
 
-	<scm>
-		<connection>scm:svn:https://192.168.7.2/svn/fsf/trunk/</connection>
-		<developerConnection>scm:svn:https://192.168.7.2/svn/fsf/trunk/</developerConnection>
-		<url>https://192.168.7.2/svn/fsf/trunk/</url>
-	</scm>
-
-	<distributionManagement>
-		<snapshotRepository>
-			<id>nexus-snapshots</id>
-			<name>wxjr Nexus Snapshot Repository</name>
-			<url>http://192.168.7.3:8081/nexus/content/repositories/snapshots/</url>
-		</snapshotRepository>
-	</distributionManagement>
-
 	<modules>
 		<module>wxjf-sdk-core</module>
 		<module>wxjf-sdk-faceplusplus</module>
 		<module>wxjf-sdk-fadada</module>
-		<module>wxjf-sdk-sms</module>
 	</modules>
 
 	<build>
