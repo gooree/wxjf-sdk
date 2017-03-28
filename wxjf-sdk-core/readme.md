@@ -1,7 +1,7 @@
-#wxjf-sdk-core
+# wxjf-sdk-core
 第三方http接口客户端sdk核心功能
 
-##Dependencies
+## Dependencies
 1. okhttp-3.5.0
 2. okio-1.11.0
 3. fastjson-1.2.8
@@ -14,5 +14,4 @@
 10. slf4j-api-1.7.9
 11. slf4j-log4j12-1.7.7
 
-##Todos
-1. 完善请求签名算法
+## Todos
