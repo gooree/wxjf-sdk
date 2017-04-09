@@ -155,6 +155,11 @@ public class OkHttpTemplate {
 		return doGet(url, parameters, null);
 	}
 	
+	public <T> T get(String url, Map<String, String> parameters,
+			ResponseExtractor<T> extractor) throws HttpException {
+		return doGet(url, parameters, null, extractor);
+	}
+	
 	private String encodeUrl(String value) throws HttpException {
 		if (StringUtils.isBlank(value)) {
 			return "";
@@ -237,13 +242,46 @@ public class OkHttpTemplate {
 		return doPost(url, parameters, files, null, new ResponseStringExtractor());
 	}
 	
+	public <T> T post(String url, MediaType mediaType, String content,
+			ResponseExtractor<T> extractor) throws HttpException {
+		RequestBody body = RequestBody.create(mediaType, content);
+		
+		Request.Builder builder = new Request.Builder();
+		builder.addHeader("version", ApiConstants.VERSION);
+		builder.addHeader("user-agent", ApiConstants.WXJF_SDK);
+		Request request = builder.url(url).post(body).build();
+
+		Response response = null;
+		try {
+			response = client.newCall(request).execute();
+			if (response.isSuccessful()) {
+				return extractor.extract(response);
+			} else {
+				logger.info("http request failure.response code:{},response message:{}",
+						response.code(), response.message());
+				throw new HttpException(response.code(), response.message());
+			}
+		} catch (IOException ioEx) {
+			if (ioEx instanceof HttpException) {
+				throw (HttpException) ioEx;
+			}
+			logger.error("http request failure,exception ocurred.", ioEx);
+			if (response != null) {
+				throw new HttpException(response.code(), response.message(),
+						ioEx);
+			} else {
+				throw new HttpException(ioEx);
+			}
+		}
+	}
+	
 	public String postEntity(String url, MediaType mediaType, String content) throws HttpException {
 		RequestBody body = RequestBody.create(mediaType, content);
 		
-		Request.Builder buillder = new Request.Builder();
-		buillder.addHeader("version", ApiConstants.VERSION);
-		buillder.addHeader("user-agent", ApiConstants.WXJF_SDK);
-		Request request = buillder.url(url).post(body).build();
+		Request.Builder builder = new Request.Builder();
+		builder.addHeader("version", ApiConstants.VERSION);
+		builder.addHeader("user-agent", ApiConstants.WXJF_SDK);
+		Request request = builder.url(url).post(body).build();
 
 		Response response = null;
 		try {
